@@ -28,7 +28,17 @@ const userReducer = (state = initialState, action) => {
           user.id === action.payload ? { ...user, blocked: false } : user
         ),
       };
-      
+
+    case "UPDATE_USER_ROLE":
+      return {
+        ...state,
+        users: state.users.map((user) =>
+          user.id === action.payload.userId
+            ? { ...user, role: action.payload.role }
+            : user
+        ),
+      };
+
     default:
       return state;
   }

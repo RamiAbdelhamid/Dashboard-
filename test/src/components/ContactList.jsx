@@ -11,27 +11,35 @@ const ContactList = () => {
   }, [dispatch]);
 
   return (
-    <div className="p-4 max-w-4xl mx-auto">
-      <h2 className="text-2xl font-semibold text-gray-800 mb-6">Contacts</h2>
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+    <div className="p-6 max-w-7xl mx-auto">
+      <h2 className="text-2xl font-semibold text-gray-900 dark:text-white mb-8">
+        Messages
+      </h2>
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         {contacts.map((contact) => (
           <div
             key={contact.id}
-            className="bg-white border border-gray-300 shadow-sm rounded-lg p-4"
-          > 
-          
-          <p className="text-sm text-gray-500">{contact.email}</p>
+            className="bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-700 shadow-lg rounded-lg p-6 hover:shadow-xl transition-all"
+          >
+            <div className="space-y-4">
+              <div>
+                <p className="text-sm text-gray-500 dark:text-gray-400">
+                  Email: {contact.email}
+                </p>
+              </div>
 
-          
-            <p className="text-lg font-semibold text-gray-800">
-              {contact.subject || "No Subject"}
-            </p>
+              <div>
+                <p className="text-xl font-semibold text-gray-900 dark:text-white">
+                  {contact.subject || "No Subject"}
+                </p>
+              </div>
 
-
-            <p className="text-sm text-gray-700">
-              {contact.message || "No Message"}
-            </p>
-           
+              <div>
+                <p className="text-sm text-gray-700 dark:text-gray-300">
+                  {contact.message || "No Message"}
+                </p>
+              </div>
+            </div>
           </div>
         ))}
       </div>

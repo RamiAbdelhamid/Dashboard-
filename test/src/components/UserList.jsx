@@ -4,6 +4,7 @@ import {
   fetchUsers,
   blockUser,
   unblockUser,
+  updateUserRole, // تأكد من أن هذه الدالة مضافة في الأكشن
 } from "../redux/actions/userActions";
 import Swal from "sweetalert2"; // استيراد SweetAlert2
 
@@ -48,44 +49,66 @@ const UserList = () => {
       }
     });
   };
-return (
-  <div className="max-w-3xl mx-auto mt-8">
-    <h2 className="text-2xl font-bold text-gray-800 mb-6">User List</h2>
 
-    <ul className="border border-gray-200 rounded-lg overflow-hidden bg-white">
-      {users.map((user) => (
-        <li
-          key={user.id}
-          className="flex justify-between items-center p-4 border-b last:border-b-0 hover:bg-gray-100 transition"
-        >
-          <div>
-            <h3 className="text-lg font-semibold text-gray-900">{user.name}</h3>
-            <p className="text-gray-600 text-sm">{user.email}</p>
-          </div>
+  const handleRoleChange = (userId, newRole) => {
+    dispatch(updateUserRole(userId, newRole)); // تأكد من أنك قد أنشأت إجراء updateUserRole في أكشن
+    Swal.fire("Role Updated!", `User role changed to ${newRole}.`, "success");
+  };
 
-          <div>
-            {!user.blocked ? (
-              <button
-                onClick={() => handleBlock(user.id)}
-                className="bg-red-600 text-white px-3 py-1 rounded-md hover:bg-red-700 transition"
+  return (
+    <div className="max-w-4xl mx-auto mt-8 px-4">
+      <h2 className="text-2xl font-semibold text-gray-900 dark:text-white mb-6">
+        User List
+      </h2>
+
+      <ul className="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg overflow-hidden shadow-md">
+        {users.map((user) => (
+          <li
+            key={user.id}
+            className="flex justify-between items-center p-4 border-b dark:border-gray-600 last:border-b-0 hover:bg-gray-100 dark:hover:bg-gray-700 transition-all"
+          >
+            <div>
+              <h3 className="text-lg font-semibold text-gray-900 dark:text-white">
+                {user.name}
+              </h3>
+              <p className="text-gray-600 dark:text-gray-300 text-sm">
+                {user.email}
+              </p>
+            </div>
+
+            <div className="flex items-center space-x-4">
+              {!user.blocked ? (
+                <button
+                  onClick={() => handleBlock(user.id)}
+                  className="bg-red-600 text-white px-4 py-2 rounded-md hover:bg-red-700 transition duration-200 ease-in-out"
+                >
+                  Block
+                </button>
+              ) : (
+                <button
+                  onClick={() => handleUnblock(user.id)}
+                  className="bg-green-600 text-white px-4 py-2 rounded-md hover:bg-green-700 transition duration-200 ease-in-out"
+                >
+                  Unblock
+                </button>
+              )}
+
+              {/* Dropdown to change role */}
+              <select
+                value={user.role}
+                onChange={(e) => handleRoleChange(user.id, e.target.value)}
+                className="bg-gray-200 text-gray-700 p-2 rounded-md"
               >
-                Block
-              </button>
-            ) : (
-              <button
-                onClick={() => handleUnblock(user.id)}
-                className="bg-green-600 text-white px-3 py-1 rounded-md hover:bg-green-700 transition"
-              >
-                Unblock
-              </button>
-            )}
-          </div>
-        </li>
-      ))}
-    </ul>
-  </div>
-);
-
+                <option value="user">User</option>
+                <option value="admin">Admin</option>
+                <option value="moderator">Moderator</option>
+              </select>
+            </div>
+          </li>
+        ))}
+      </ul>
+    </div>
+  );
 };
 
 export default UserList;

@@ -58,3 +58,19 @@ export const deletePost = (postId) => async (dispatch) => {
     console.error('Error deleting post:', error);
   }
 };
+
+
+//role
+export const updateUserRole = (userId, newRole) => async (dispatch) => {
+  try {
+    const response = await axios.put(`/api/users/${userId}/role`, {
+      role: newRole,
+    });
+    dispatch({
+      type: "UPDATE_USER_ROLE",
+      payload: { userId, role: newRole },
+    });
+  } catch (error) {
+    console.error("Error updating user role:", error);
+  }
+};
